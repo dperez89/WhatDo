@@ -155,7 +155,7 @@ namespace WhatDo.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, City = model.City, State = model.State, Zip = model.ZipCode };
                 //var currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -185,7 +185,7 @@ namespace WhatDo.Controllers
             newFriendsList.Name = userToAddFriendsListFor.UserName + "'s Friends List";
             db.FriendsLists.Add(newFriendsList);
             db.SaveChanges();
-            return RedirectToAction("Index", "Enjoyer");
+            return RedirectToAction("GetPreferences", "Enjoyer");
 
 
 

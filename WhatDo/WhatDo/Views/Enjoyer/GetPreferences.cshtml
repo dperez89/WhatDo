@@ -1,0 +1,14 @@
+﻿@model WhatDo.Models.GetPreferencesViewModel
+@{
+    ViewBag.Title = "GetPreferences";
+}
+
+<div class="jumbotron">
+    <h1>Nice to meet you @*enter user name here*@</h1>
+    <p class="lead">Tell us a little bit about yourself!</p>
+    <h2>What kinds of food do you like?</h2>
+    <h2>What kinds of movies do you like?</h2>
+
+    <input type="button" value="Some text" onclick="@("window.location.href='" + @Url.Action("Contact", "Home") + "'");" />
+</div>
+

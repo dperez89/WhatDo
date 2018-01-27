@@ -196,6 +196,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CityIdResolver.cs" />
     <Compile Include="Controllers\EnjoyerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -218,14 +219,28 @@
     <Compile Include="Migrations\201801252127460_ChangingFriendsListIdOnUsersTableToNullable.Designer.cs">
       <DependentUpon>201801252127460_ChangingFriendsListIdOnUsersTableToNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801261706337_RemovingCityStateZipTable.cs" />
+    <Compile Include="Migrations\201801261706337_RemovingCityStateZipTable.Designer.cs">
+      <DependentUpon>201801261706337_RemovingCityStateZipTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.cs" />
+    <Compile Include="Migrations\201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.Designer.cs">
+      <DependentUpon>201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CityResultResponse.cs" />
+    <Compile Include="Models\Cuisine.cs" />
+    <Compile Include="Models\Cuisines.cs" />
+    <Compile Include="Models\CuisineResultResponse.cs" />
+    <Compile Include="Models\location_suggestions.cs" />
     <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CityStateZip.cs" />
-    <Compile Include="Models\Cuisine.cs" />
+    <Compile Include="Models\DatabaseCuisine.cs" />
     <Compile Include="Models\FoodSuggestion.cs" />
     <Compile Include="Models\FriendsList.cs" />
     <Compile Include="Models\FriendsListInvite.cs" />
     <Compile Include="Models\Genre.cs" />
+    <Compile Include="Models\GetPreferencesViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MovieSuggestion.cs" />
@@ -260,6 +275,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ZipCodeHelper.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -296,6 +312,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Enjoyer\Index.cshtml" />
+    <Content Include="Views\Enjoyer\GetPreferences.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -320,6 +337,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801252127460_ChangingFriendsListIdOnUsersTableToNullable.resx">
       <DependentUpon>201801252127460_ChangingFriendsListIdOnUsersTableToNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801261706337_RemovingCityStateZipTable.resx">
+      <DependentUpon>201801261706337_RemovingCityStateZipTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.resx">
+      <DependentUpon>201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

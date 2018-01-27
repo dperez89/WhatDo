@@ -66,6 +66,15 @@ namespace WhatDo.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Zip Code")]
+        public string ZipCode { get; set; }
+        [Required]
+        [Display(Name = "State")]
+        public string State { get; set; }
+        [Required]
+        [Display(Name = "City")]
+        public string City { get; set; }
+        [Required]
         public string Role { get; set; }
         public SelectList Roles { get; set; }
 

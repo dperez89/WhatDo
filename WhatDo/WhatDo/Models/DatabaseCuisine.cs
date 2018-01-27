@@ -5,9 +5,9 @@ using System.Web;
 
 namespace WhatDo.Models
 {
-    public class Cuisine
+    public class DatabaseCuisine
     {
-        public string Cuisine_Id { get; set; }
-        public string Cuisine_Name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
