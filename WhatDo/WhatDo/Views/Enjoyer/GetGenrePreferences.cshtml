@@ -1,0 +1,53 @@
+﻿@model WhatDo.Models.GetPreferencesViewModel
+@{
+    ViewBag.Title = "GetGenrePreferences";
+}
+
+<div class="jumbotron">
+    <h1>What kinds of movies do you like?</h1>
+</div>
+
+@using (Html.BeginForm("GetGenrePreferences","Enjoyer",FormMethod.Post))
+{
+    <div class="left">
+        <h1>Genres List:</h1>
+    </div>
+    <div>
+        <table class="table-bordered" align="left" width="40">
+            <tr>
+                <th scope="col">Available Genres</th>
+            </tr>
+            @foreach (string genreName in Model.AvailableGenres)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => genreName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Add", "AddGenrePreferences", new { genreToAdd = genreName, userId = Model.User.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+      <div class="right">
+        <table class="table" align="center" width="60">
+            <tr>
+                <th scope="col">Your Preferred Genres</th>
+            </tr>
+            @foreach (string genreName in Model.PreferredGenres)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => genreName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Remove", "RemoveGenrePreferences", new { genreToRemove = genreName, userId = Model.User.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+

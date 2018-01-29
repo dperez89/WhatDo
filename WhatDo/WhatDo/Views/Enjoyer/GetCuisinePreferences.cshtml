@@ -1,13 +1,13 @@
 ﻿@model WhatDo.Models.GetPreferencesViewModel
 @{
-    ViewBag.Title = "GetPreferences";
+    ViewBag.Title = "GetCuisinePreferences";
 }
 
 <div class="jumbotron">
     <h1>What kinds of food do you like?</h1>
 </div>
 
-@using (Html.BeginForm("GetPreferences","Enjoyer",FormMethod.Post))
+@using (Html.BeginForm("GetCuisinePreferences","Enjoyer",FormMethod.Post))
 {
     <div class="left">
         <h1>Cuisines List For Your Area:</h1>
@@ -24,7 +24,7 @@
                         @Html.DisplayFor(model => cuisineName)
                     </td>
                     <td>
-                        @Html.ActionLink("Add", "AddPreferences", new { cuisineToAdd = cuisineName, userId = Model.User.Id })
+                        @Html.ActionLink("Add", "AddCuisinePreferences", new { cuisineToAdd = cuisineName, userId = Model.User.Id })
                     </td>
                 </tr>
             }
@@ -42,7 +42,7 @@
                         @Html.DisplayFor(model => cuisineName)
                     </td>
                     <td>
-                        @Html.ActionLink("Remove", "RemovePreferences", new { cuisineToRemove = cuisineName, userId = Model.User.Id })
+                        @Html.ActionLink("Remove", "RemoveCuisinePreferences", new { cuisineToRemove = cuisineName, userId = Model.User.Id })
                     </td>
                 </tr>
             }

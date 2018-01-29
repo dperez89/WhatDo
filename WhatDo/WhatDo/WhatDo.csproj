@@ -291,7 +291,8 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Enjoyer\Index.cshtml" />
-    <Content Include="Views\Enjoyer\GetPreferences.cshtml" />
+    <Content Include="Views\Enjoyer\GetCuisinePreferences.cshtml" />
+    <Content Include="Views\Enjoyer\GetGenrePreferences.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

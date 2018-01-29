@@ -29,9 +29,41 @@ namespace WhatDo.Controllers
             return View();
         }
 
+        // GET:
+        public ActionResult GetGenrePreferences()
+        {
+            GetPreferencesViewModel preferencesViewModel = new GetPreferencesViewModel();
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            preferencesViewModel.User = currentUser;
+            foreach (Genre genre in db.Genres)
+            {
+                string genreNameToAdd = genre.Name;
+                preferencesViewModel.AvailableGenres.Add(genreNameToAdd);
+            }
+            foreach (UserToGenre genre in db.UserToGenres)
+            {
+                for (int i = 0; i <= preferencesViewModel.AvailableGenres.Count-1; i++)
+                {
+                    if (genre.UserId == preferencesViewModel.User.Id && genre.Genre.Name == preferencesViewModel.AvailableGenres[i])
+                    {
+                        preferencesViewModel.AvailableGenres.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            foreach (UserToGenre genre in db.UserToGenres)
+            {
+                if(genre.UserId == preferencesViewModel.User.Id)
+                {
+                    preferencesViewModel.PreferredGenres.Add(genre.Genre.Name);
+                }
+            }
+            return View(preferencesViewModel);
+        }
+
         // GET
         [HttpGet]
-        public ActionResult GetPreferences()
+        public ActionResult GetCuisinePreferences()
         {
             GetPreferencesViewModel preferencesViewModel = new GetPreferencesViewModel();
             var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
@@ -63,28 +95,26 @@ namespace WhatDo.Controllers
                 {
                     preferencesViewModel.PreferredCuisines.Add(cuisine.CuisineName);
                 }
-            }
-            preferencesViewModel.CuisineOptions = new SelectList(preferencesViewModel.AvailableCuisines);
-            
+            }            
             return View(preferencesViewModel);
         }
        
-        public ActionResult AddPreferences(string cuisineToAdd, string userId)
+        public ActionResult AddCuisinePreferences(string cuisineToAdd, string userId)
         {
             foreach (UserToCuisine element in db.UserToCuisines)
             {
                 if (element.UserId == userId && element.CuisineName == cuisineToAdd)
                 {
-                    return View("GetPreferences");
+                    return View("GetCuisinePreferences");
                 }
             }
             UserToCuisine userToCuisineToAdd = new UserToCuisine { UserId = userId, CuisineName = cuisineToAdd };
             db.UserToCuisines.Add(userToCuisineToAdd);
             db.SaveChanges();
-            return RedirectToAction("GetPreferences", "Enjoyer");
+            return RedirectToAction("GetCuisinePreferences", "Enjoyer");
         }
 
-        public ActionResult RemovePreferences(string cuisineToRemove, string userId)
+        public ActionResult RemoveCuisinePreferences(string cuisineToRemove, string userId)
         {
             foreach (UserToCuisine element in db.UserToCuisines)
             {
@@ -96,7 +126,7 @@ namespace WhatDo.Controllers
                 }
             }
             db.SaveChanges();
-            return RedirectToAction("GetPreferences", "Enjoyer");
+            return RedirectToAction("GetCuisinePreferences", "Enjoyer");
         }
     }
 }
