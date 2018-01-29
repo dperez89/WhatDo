@@ -12,8 +12,6 @@ namespace WhatDo.Models
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
-        public int CuisineId { get; set; }
-        [ForeignKey("CuisineId")]
-        public DatabaseCuisine Cuisine { get; set; }
+        public string CuisineName { get; set; }        
     }
 }

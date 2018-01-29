@@ -27,7 +27,6 @@ namespace WhatDo.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<DatabaseCuisine> Cuisines { get; set; }
         public DbSet<FoodSuggestion> FoodSuggestions { get; set; }
         public DbSet<FriendsList> FriendsLists { get; set; }
         public DbSet<FriendsListInvite> FriendsListInvites { get; set; }

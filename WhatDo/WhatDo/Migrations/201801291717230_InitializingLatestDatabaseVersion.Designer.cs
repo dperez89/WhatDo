@@ -7,13 +7,13 @@ namespace WhatDo.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class ChangedDBOCuisinesToDBODatabaseCuisine : IMigrationMetadata
+    public sealed partial class InitializingLatestDatabaseVersion : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangedDBOCuisinesToDBODatabaseCuisine));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitializingLatestDatabaseVersion));
         
         string IMigrationMetadata.Id
         {
-            get { return "201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine"; }
+            get { return "201801291717230_InitializingLatestDatabaseVersion"; }
         }
         
         string IMigrationMetadata.Source

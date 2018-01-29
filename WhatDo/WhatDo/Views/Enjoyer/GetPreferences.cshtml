@@ -4,11 +4,50 @@
 }
 
 <div class="jumbotron">
-    <h1>Nice to meet you @*enter user name here*@</h1>
-    <p class="lead">Tell us a little bit about yourself!</p>
-    <h2>What kinds of food do you like?</h2>
-    <h2>What kinds of movies do you like?</h2>
-
-    <input type="button" value="Some text" onclick="@("window.location.href='" + @Url.Action("Contact", "Home") + "'");" />
+    <h1>What kinds of food do you like?</h1>
 </div>
+
+@using (Html.BeginForm("GetPreferences","Enjoyer",FormMethod.Post))
+{
+    <div class="left">
+        <h1>Cuisines List For Your Area:</h1>
+    </div>
+    <div>
+        <table class="table-bordered" align="left" width="40">
+            <tr>
+                <th scope="col">Available Cuisines</th>
+            </tr>
+            @foreach (string cuisineName in Model.AvailableCuisines)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => cuisineName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Add", "AddPreferences", new { cuisineToAdd = cuisineName, userId = Model.User.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+      <div class="right">
+        <table class="table" align="center" width="60">
+            <tr>
+                <th scope="col">Your Preferred Cuisines</th>
+            </tr>
+            @foreach (string cuisineName in Model.PreferredCuisines)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => cuisineName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Remove", "RemovePreferences", new { cuisineToRemove = cuisineName, userId = Model.User.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
 

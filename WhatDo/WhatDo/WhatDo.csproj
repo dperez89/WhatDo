@@ -203,39 +203,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201801251516334_initial.cs" />
-    <Compile Include="Migrations\201801251516334_initial.Designer.cs">
-      <DependentUpon>201801251516334_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201801291717230_InitializingLatestDatabaseVersion.cs" />
+    <Compile Include="Migrations\201801291717230_InitializingLatestDatabaseVersion.Designer.cs">
+      <DependentUpon>201801291717230_InitializingLatestDatabaseVersion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201801251941545_AddingInTheBaseSetOfPlannedModels.cs" />
-    <Compile Include="Migrations\201801251941545_AddingInTheBaseSetOfPlannedModels.Designer.cs">
-      <DependentUpon>201801251941545_AddingInTheBaseSetOfPlannedModels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801252117558_AdjustingCityStateZipIdColumnOnUsersTable.cs" />
-    <Compile Include="Migrations\201801252117558_AdjustingCityStateZipIdColumnOnUsersTable.Designer.cs">
-      <DependentUpon>201801252117558_AdjustingCityStateZipIdColumnOnUsersTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801252127460_ChangingFriendsListIdOnUsersTableToNullable.cs" />
-    <Compile Include="Migrations\201801252127460_ChangingFriendsListIdOnUsersTableToNullable.Designer.cs">
-      <DependentUpon>201801252127460_ChangingFriendsListIdOnUsersTableToNullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801261706337_RemovingCityStateZipTable.cs" />
-    <Compile Include="Migrations\201801261706337_RemovingCityStateZipTable.Designer.cs">
-      <DependentUpon>201801261706337_RemovingCityStateZipTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.cs" />
-    <Compile Include="Migrations\201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.Designer.cs">
-      <DependentUpon>201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CityResultResponse.cs" />
     <Compile Include="Models\Cuisine.cs" />
     <Compile Include="Models\Cuisines.cs" />
     <Compile Include="Models\CuisineResultResponse.cs" />
     <Compile Include="Models\location_suggestions.cs" />
-    <Compile Include="Models\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CityStateZip.cs" />
-    <Compile Include="Models\DatabaseCuisine.cs" />
     <Compile Include="Models\FoodSuggestion.cs" />
     <Compile Include="Models\FriendsList.cs" />
     <Compile Include="Models\FriendsListInvite.cs" />
@@ -326,23 +305,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801251516334_initial.resx">
-      <DependentUpon>201801251516334_initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801251941545_AddingInTheBaseSetOfPlannedModels.resx">
-      <DependentUpon>201801251941545_AddingInTheBaseSetOfPlannedModels.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801252117558_AdjustingCityStateZipIdColumnOnUsersTable.resx">
-      <DependentUpon>201801252117558_AdjustingCityStateZipIdColumnOnUsersTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801252127460_ChangingFriendsListIdOnUsersTableToNullable.resx">
-      <DependentUpon>201801252127460_ChangingFriendsListIdOnUsersTableToNullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801261706337_RemovingCityStateZipTable.resx">
-      <DependentUpon>201801261706337_RemovingCityStateZipTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.resx">
-      <DependentUpon>201801272251325_ChangedDBO.CuisinesToDBO.DatabaseCuisine.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201801291717230_InitializingLatestDatabaseVersion.resx">
+      <DependentUpon>201801291717230_InitializingLatestDatabaseVersion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
