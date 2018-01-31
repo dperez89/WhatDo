@@ -61,6 +61,38 @@ namespace WhatDo.Controllers
             return View(preferencesViewModel);
         }
 
+        public ActionResult AddGenrePreferences(string genreToAdd, string userId)
+        {
+            int genreToAddId = (from genre in db.Genres where genre.Name == genreToAdd select genre.Id).First();
+            foreach (UserToGenre element in db.UserToGenres)
+            {
+                if (element.UserId == userId && element.GenreId == genreToAddId)
+                {
+                    return View("GetGenrePreferences");
+                }
+            }            
+            UserToGenre userToGenreToAdd = new UserToGenre { UserId = userId, GenreId = genreToAddId };
+            db.UserToGenres.Add(userToGenreToAdd);
+            db.SaveChanges();
+            return RedirectToAction("GetGenrePreferences", "Enjoyer");
+        }
+
+        public ActionResult RemoveGenrePreferences(string genreToRemove, string userId)
+        {
+            int genreToRemoveId = (from genre in db.Genres where genre.Name == genreToRemove select genre.Id).FirstOrDefault();
+            foreach (UserToGenre element in db.UserToGenres)
+            {
+                if (element.UserId == userId && element.GenreId == genreToRemoveId)
+                {
+                    //UserToCuisine userToCuisineToRemove = new UserToCuisine { UserId = userId, CuisineName = cuisineToRemove };
+                    db.UserToGenres.Remove(element);
+                    break;
+                }
+            }
+            db.SaveChanges();
+            return RedirectToAction("GetGenrePreferences", "Enjoyer");
+        }
+
         // GET
         [HttpGet]
         public ActionResult GetCuisinePreferences()

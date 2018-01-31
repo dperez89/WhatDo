@@ -5,7 +5,8 @@
 <div class="jumbotron">
     <h1>Welcome!</h1>
     <p class="lead">What do you want to do?</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    @*<p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
     
-    <input type="button" value="Some text" onclick="@("window.location.href='" + @Url.Action("GetPreferences", "Enjoyer") + "'");" />
+    <input type="button" value="Manage Food Preferences" onclick="@("window.location.href='" + @Url.Action("GetCuisinePreferences", "Enjoyer") + "'");" />
+    <input type="button" value="Manage Movie Preferences" onclick="@("window.location.href='" + @Url.Action("GetGenrePreferences", "Enjoyer") + "'");" />
 </div>
