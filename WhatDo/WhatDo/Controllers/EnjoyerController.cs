@@ -193,20 +193,49 @@ namespace WhatDo.Controllers
             var restaurantSearchResponse = restaurantSearchClient.DownloadString("https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + lon + "&cuisines=" + restaurantSearchModel.ResolvedCuisineIdsToSearch + "");
             var restaurantSearchResults = new JavaScriptSerializer().Deserialize<RestaurantResultResponse>(restaurantSearchResponse);
 
-            for(int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++)
             {
                 restaurantSearchModel.RestaurantResults.Add(restaurantSearchResults.Restaurants[i].Restaurant);
             }
+            return View(restaurantSearchModel);
+        }
 
-            //foreach (Restaurant restaurant in restaurantSearchResults.Restaurants.Restaurant)
+        public void AcceptFoodSuggestions(List<Restaurant> restaurantResults, string userId)
+        {
+            int restaurantId;
+            var result = Int32.TryParse(restaurantResults.First().Id, out restaurantId);
+            FoodSuggestion foodSuggestionToRecord = new FoodSuggestion { RestaurantId = restaurantId,
+                Name = restaurantResults[0].Name,
+                Address = restaurantResults[0].Location.Address,
+                City = restaurantResults[0].Location.City,
+                ZipCode = restaurantResults[0].Location.Zipcode,
+                Latitude = restaurantResults[0].Location.Latitude,
+                Longitude = restaurantResults[0].Location.Longitude,
+                IsChosenByUser = true };
+            db.FoodSuggestions.Add(foodSuggestionToRecord);
+            db.SaveChanges();
+
+        }
+        
+        public ActionResult DeclineFoodSuggestion(RestaurantSearchViewModel model)
+        {
+            //int restaurantId;
+            //var result = Int32.TryParse(restaurantResults.First().Id, out restaurantId);
+            //FoodSuggestion foodSuggestionToRecord = new FoodSuggestion
             //{
-            //    Restaurant restaurantToAdd = restaurant;
-            //    restaurantSearchModel.RestaurantResults.Add(restaurantToAdd);
-            //    if (restaurantSearchModel.RestaurantResults.Count == 20)
-            //    {
-            //        return View();
-            //    }
-            //}
+            //    RestaurantId = restaurantId,
+            //    Name = restaurantResults[0].Name,
+            //    Address = restaurantResults[0].Location.Address,
+            //    City = restaurantResults[0].Location.City,
+            //    ZipCode = restaurantResults[0].Location.Zipcode,
+            //    Latitude = restaurantResults[0].Location.Latitude,
+            //    Longitude = restaurantResults[0].Location.Longitude,
+            //    IsChosenByUser = true
+            //};
+            //db.FoodSuggestions.Add(foodSuggestionToRecord);
+            //db.SaveChanges();
+            //restaurantResults.RemoveAt(0);
+
             return View();
         }
     }

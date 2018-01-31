@@ -11,6 +11,7 @@ namespace WhatDo.Models
         public string Name { get; set; }
         public string Url { get; set; }
         public Location Location { get; set; }
+        public string Cuisines { get; set; }
         public string Average_Cost_For_Two { get; set; }
         public string Price_Range { get; set; }
     }
