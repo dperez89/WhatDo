@@ -30,6 +30,7 @@ namespace WhatDo.Controllers
         }
 
         // GET:
+        [HttpGet]
         public ActionResult GetGenrePreferences()
         {
             GetPreferencesViewModel preferencesViewModel = new GetPreferencesViewModel();
@@ -107,14 +108,14 @@ namespace WhatDo.Controllers
             var cuisineResults = new JavaScriptSerializer().Deserialize<CuisineResultResponse>(response);
             foreach(Cuisines cuisine in cuisineResults.Cuisines)
             {
-                string cuisineNameToAdd = cuisine.Cuisine.Cuisine_Name;
-                preferencesViewModel.AvailableCuisines.Add(cuisineNameToAdd);
+                Cuisine cuisineToAdd = cuisine.Cuisine;
+                preferencesViewModel.AvailableCuisines.Add(cuisineToAdd);
             }
             foreach (UserToCuisine cuisine in db.UserToCuisines)
             {
                 for (int i = 0; i <= preferencesViewModel.AvailableCuisines.Count-1; i++)
                 {
-                    if (cuisine.UserId == preferencesViewModel.User.Id && cuisine.CuisineName == preferencesViewModel.AvailableCuisines[i])
+                    if (cuisine.UserId == preferencesViewModel.User.Id && cuisine.CuisineName == preferencesViewModel.AvailableCuisines[i].Cuisine_Name)
                     {
                         preferencesViewModel.AvailableCuisines.RemoveAt(i);
                         i--;
@@ -125,32 +126,32 @@ namespace WhatDo.Controllers
             {
                 if(cuisine.UserId == preferencesViewModel.User.Id)
                 {
-                    preferencesViewModel.PreferredCuisines.Add(cuisine.CuisineName);
+                    preferencesViewModel.PreferredCuisines.Add(cuisine);
                 }
             }            
             return View(preferencesViewModel);
         }
        
-        public ActionResult AddCuisinePreferences(string cuisineToAdd, string userId)
+        public ActionResult AddCuisinePreferences(string cuisineNameToAdd, string userId, string cuisineIdToAdd)
         {
             foreach (UserToCuisine element in db.UserToCuisines)
             {
-                if (element.UserId == userId && element.CuisineName == cuisineToAdd)
+                if (element.UserId == userId && element.CuisineName == cuisineNameToAdd)
                 {
                     return View("GetCuisinePreferences");
                 }
             }
-            UserToCuisine userToCuisineToAdd = new UserToCuisine { UserId = userId, CuisineName = cuisineToAdd };
+            UserToCuisine userToCuisineToAdd = new UserToCuisine { UserId = userId, CuisineName = cuisineNameToAdd, CuisineId = cuisineIdToAdd };
             db.UserToCuisines.Add(userToCuisineToAdd);
             db.SaveChanges();
             return RedirectToAction("GetCuisinePreferences", "Enjoyer");
         }
 
-        public ActionResult RemoveCuisinePreferences(string cuisineToRemove, string userId)
+        public ActionResult RemoveCuisinePreferences(string cuisineNameToRemove, string userId, string cuisineIdToRemove)
         {
             foreach (UserToCuisine element in db.UserToCuisines)
             {
-                if (element.UserId == userId && element.CuisineName == cuisineToRemove)
+                if (element.UserId == userId && element.CuisineName == cuisineNameToRemove && element.CuisineId == cuisineIdToRemove)
                 {
                     //UserToCuisine userToCuisineToRemove = new UserToCuisine { UserId = userId, CuisineName = cuisineToRemove };
                     db.UserToCuisines.Remove(element);
@@ -159,6 +160,26 @@ namespace WhatDo.Controllers
             }
             db.SaveChanges();
             return RedirectToAction("GetCuisinePreferences", "Enjoyer");
+        }
+
+        // GET
+        [HttpGet]
+        public void GetFoodSuggestions()
+        {
+            SearchResultsViewModel searchResultsViewModel = new SearchResultsViewModel();
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            searchResultsViewModel.User = currentUser;
+            string currentUserCity = cityIdResolver.Resolve(currentUser);
+            var geoCodeClient = new WebClient();
+            geoCodeClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
+            var geoCodeResponse = geoCodeClient.DownloadString("https://api.internationalshowtimes.com/v4/cities?query=" + currentUserCity);
+            var geoCodeResults = new JavaScriptSerializer().Deserialize<GeoCodeResponse>(geoCodeResponse);
+            string lat = geoCodeResults.Cities[0].Lat;
+            string lon = geoCodeResults.Cities[0].Lon;
+            var restaurantSearchClient = new WebClient();
+            restaurantSearchClient.Headers.Add("user-key", "d846616ebd6c5c018f6cd8fd36a6fb68");
+            var restaurantSearchResponse = restaurantSearchClient.DownloadString("https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&" + lon + "&cuisines=" + "");
+
         }
     }
 }

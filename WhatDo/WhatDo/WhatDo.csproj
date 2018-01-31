@@ -207,11 +207,18 @@
     <Compile Include="Migrations\201801291717230_InitializingLatestDatabaseVersion.Designer.cs">
       <DependentUpon>201801291717230_InitializingLatestDatabaseVersion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801311751019_AddedCuisineIdColumnToUsersToCuisineTable.cs" />
+    <Compile Include="Migrations\201801311751019_AddedCuisineIdColumnToUsersToCuisineTable.Designer.cs">
+      <DependentUpon>201801311751019_AddedCuisineIdColumnToUsersToCuisineTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Cities.cs" />
     <Compile Include="Models\CityResultResponse.cs" />
     <Compile Include="Models\Cuisine.cs" />
     <Compile Include="Models\Cuisines.cs" />
     <Compile Include="Models\CuisineResultResponse.cs" />
+    <Compile Include="Models\GeoCodeResponse.cs" />
+    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\location_suggestions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CityStateZip.cs" />
@@ -223,6 +230,9 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MovieSuggestion.cs" />
+    <Compile Include="Models\Restaurants.cs" />
+    <Compile Include="Models\RestaurantResultResponse.cs" />
+    <Compile Include="Models\SearchResultsViewModel.cs" />
     <Compile Include="Models\ShowTimeResults.cs" />
     <Compile Include="Models\UserToCuisine.cs" />
     <Compile Include="Models\UserToGenre.cs" />
@@ -308,6 +318,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801291717230_InitializingLatestDatabaseVersion.resx">
       <DependentUpon>201801291717230_InitializingLatestDatabaseVersion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801311751019_AddedCuisineIdColumnToUsersToCuisineTable.resx">
+      <DependentUpon>201801311751019_AddedCuisineIdColumnToUsersToCuisineTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

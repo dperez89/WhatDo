@@ -17,14 +17,14 @@
             <tr>
                 <th scope="col">Available Cuisines</th>
             </tr>
-            @foreach (string cuisineName in Model.AvailableCuisines)
+            @foreach (WhatDo.Models.Cuisine cuisine in Model.AvailableCuisines)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(model => cuisineName)
+                        @Html.DisplayFor(model => cuisine.Cuisine_Name)
                     </td>
                     <td>
-                        @Html.ActionLink("Add", "AddCuisinePreferences", new { cuisineToAdd = cuisineName, userId = Model.User.Id })
+                        @Html.ActionLink("Add", "AddCuisinePreferences", new { cuisineNameToAdd = cuisine.Cuisine_Name, userId = Model.User.Id, cusineIdToAdd = cuisine.Cuisine_Id})
                     </td>
                 </tr>
             }
@@ -35,14 +35,14 @@
             <tr>
                 <th scope="col">Your Preferred Cuisines</th>
             </tr>
-            @foreach (string cuisineName in Model.PreferredCuisines)
+            @foreach (WhatDo.Models.UserToCuisine cuisine in Model.PreferredCuisines)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(model => cuisineName)
+                        @Html.DisplayFor(model => cuisine.CuisineName)
                     </td>
                     <td>
-                        @Html.ActionLink("Remove", "RemoveCuisinePreferences", new { cuisineToRemove = cuisineName, userId = Model.User.Id })
+                        @Html.ActionLink("Remove", "RemoveCuisinePreferences", new { cuisineNameToRemove = cuisine.CuisineName, userId = Model.User.Id, cuisineIdToRemove = cuisine.CuisineId })
                     </td>
                 </tr>
             }
