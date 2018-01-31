@@ -230,9 +230,10 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MovieSuggestion.cs" />
+    <Compile Include="Models\Restaurant.cs" />
     <Compile Include="Models\Restaurants.cs" />
     <Compile Include="Models\RestaurantResultResponse.cs" />
-    <Compile Include="Models\SearchResultsViewModel.cs" />
+    <Compile Include="Models\RestaurantSearchViewModel.cs" />
     <Compile Include="Models\ShowTimeResults.cs" />
     <Compile Include="Models\UserToCuisine.cs" />
     <Compile Include="Models\UserToGenre.cs" />

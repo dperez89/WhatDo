@@ -164,22 +164,50 @@ namespace WhatDo.Controllers
 
         // GET
         [HttpGet]
-        public void GetFoodSuggestions()
+        public ActionResult GetFoodSuggestions()
         {
-            SearchResultsViewModel searchResultsViewModel = new SearchResultsViewModel();
+            RestaurantSearchViewModel restaurantSearchModel = new RestaurantSearchViewModel();
             var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
-            searchResultsViewModel.User = currentUser;
-            string currentUserCity = cityIdResolver.Resolve(currentUser);
+            restaurantSearchModel.User = currentUser;
             var geoCodeClient = new WebClient();
             geoCodeClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
-            var geoCodeResponse = geoCodeClient.DownloadString("https://api.internationalshowtimes.com/v4/cities?query=" + currentUserCity);
+            var geoCodeResponse = geoCodeClient.DownloadString("https://api.internationalshowtimes.com/v4/cities?query=" + restaurantSearchModel.User.City);
             var geoCodeResults = new JavaScriptSerializer().Deserialize<GeoCodeResponse>(geoCodeResponse);
             string lat = geoCodeResults.Cities[0].Lat;
             string lon = geoCodeResults.Cities[0].Lon;
+
+            foreach (UserToCuisine cuisine in db.UserToCuisines)
+            {
+                if (cuisine.UserId == restaurantSearchModel.User.Id)
+                {
+                    restaurantSearchModel.CuisineIdsToSearch.Add(cuisine.CuisineId);
+                }
+            }
+            if (restaurantSearchModel.CuisineIdsToSearch.Count > 1)
+            {
+                restaurantSearchModel.ResolvedCuisineIdsToSearch = string.Join(",", restaurantSearchModel.CuisineIdsToSearch);
+            }
+            restaurantSearchModel.ResolvedCuisineIdsToSearch = restaurantSearchModel.CuisineIdsToSearch.First();
             var restaurantSearchClient = new WebClient();
             restaurantSearchClient.Headers.Add("user-key", "d846616ebd6c5c018f6cd8fd36a6fb68");
-            var restaurantSearchResponse = restaurantSearchClient.DownloadString("https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&" + lon + "&cuisines=" + "");
+            var restaurantSearchResponse = restaurantSearchClient.DownloadString("https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + lon + "&cuisines=" + restaurantSearchModel.ResolvedCuisineIdsToSearch + "");
+            var restaurantSearchResults = new JavaScriptSerializer().Deserialize<RestaurantResultResponse>(restaurantSearchResponse);
 
+            for(int i = 0; i < 20; i++)
+            {
+                restaurantSearchModel.RestaurantResults.Add(restaurantSearchResults.Restaurants[i].Restaurant);
+            }
+
+            //foreach (Restaurant restaurant in restaurantSearchResults.Restaurants.Restaurant)
+            //{
+            //    Restaurant restaurantToAdd = restaurant;
+            //    restaurantSearchModel.RestaurantResults.Add(restaurantToAdd);
+            //    if (restaurantSearchModel.RestaurantResults.Count == 20)
+            //    {
+            //        return View();
+            //    }
+            //}
+            return View();
         }
     }
 }

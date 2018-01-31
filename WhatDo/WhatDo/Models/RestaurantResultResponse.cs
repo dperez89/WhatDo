@@ -8,5 +8,9 @@ namespace WhatDo.Models
     public class RestaurantResultResponse
     {
         public List<Restaurants> Restaurants { get; set; }
+
+        public RestaurantResultResponse()
+        {
+        }
     }
 }
