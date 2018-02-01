@@ -5,14 +5,11 @@ using System.Web;
 
 namespace WhatDo.Models
 {
-    public class Cities
+    public class Movies
     {
         public string Id { get; set; }
-        public string Name { get; set; }
         public string Slug { get; set; }
-        public string Lat { get; set; }
-        public string Lon { get; set; }
-        public string Country { get; set; }
-
+        public string Title { get; set; }
+        public string Poster_Image_Thumbnail { get; set; }
     }
 }

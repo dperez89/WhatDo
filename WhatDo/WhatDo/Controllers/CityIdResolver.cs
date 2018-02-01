@@ -21,7 +21,7 @@ namespace WhatDo.Controllers
             var client = new WebClient();            
             client.Headers.Add("user-key", "d846616ebd6c5c018f6cd8fd36a6fb68");
             var response = client.DownloadString("https://developers.zomato.com/api/v2.1/cities?q="+currentUser.City);
-            var citiesResults = new JavaScriptSerializer().Deserialize<CityResultResponse>(response);
+            var citiesResults = new JavaScriptSerializer().Deserialize<ZomatoCityResultResponse>(response);
             //var citiesResults = new JavaScriptSerializer().Deserialize<location_suggestions>(response);
             string resolvedCityId = citiesResults.Location_Suggestions[0].Id;
 

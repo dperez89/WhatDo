@@ -9,6 +9,7 @@ namespace WhatDo.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string DatabaseId { get; set; }
 
     }
 }

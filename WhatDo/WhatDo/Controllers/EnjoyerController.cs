@@ -164,6 +164,52 @@ namespace WhatDo.Controllers
 
         // GET
         [HttpGet]
+        public ActionResult GetMovieSuggestions()
+        {
+            MovieSearchViewModel movieSearchModel = new MovieSearchViewModel();
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            movieSearchModel.User = currentUser;
+
+            var getIShowTimeCityIdClient = new WebClient();
+            getIShowTimeCityIdClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
+            var getIShowTimeCityIdResponse = getIShowTimeCityIdClient.DownloadString("https://api.internationalshowtimes.com/v4/cities?query=" + movieSearchModel.User.City);
+            var getIShowTimeCityResults = new JavaScriptSerializer().Deserialize<IShowTimeCityResultResponse>(getIShowTimeCityIdResponse);
+            string iShowTimeCityId = getIShowTimeCityResults.Cities[0].Id;
+
+            foreach (UserToGenre genre in db.UserToGenres)
+            {
+                if(genre.UserId == movieSearchModel.User.Id)
+                {
+                    string genreIdToAdd = genre.GenreId.ToString();
+                    movieSearchModel.PreferredGenres.Add(genreIdToAdd);
+                }
+            }
+            foreach (string genreId in movieSearchModel.PreferredGenres)
+            {
+                foreach (Genre genre in db.Genres)
+                {
+                    if (genreId == genre.Id.ToString())
+                    {
+                        string genreDatabaseIdToAdd = genre.DatabaseId;
+                        movieSearchModel.ResolvedPreferredGenreIds.Add(genreDatabaseIdToAdd);
+                    }
+                }
+            }
+            movieSearchModel.ResolvedGenreIdsToSearch = movieSearchModel.ResolvedPreferredGenreIds.First();
+            if (movieSearchModel.ResolvedPreferredGenreIds.Count > 1)
+            {
+                movieSearchModel.ResolvedGenreIdsToSearch = string.Join(",", movieSearchModel.ResolvedPreferredGenreIds);
+            }
+            var movieSearchClient = new WebClient();
+            movieSearchClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
+            var movieSearchResponse = movieSearchClient.DownloadString("https://api.internationalshowtimes.com/v4/movies?genre_ids="+movieSearchModel.ResolvedGenreIdsToSearch+"&city_ids="+iShowTimeCityId+"");
+            var movieSearchResults = new JavaScriptSerializer().Deserialize<MovieResultResponse>(movieSearchResponse);
+            return View();
+
+        }
+
+        // GET
+        [HttpGet]
         public ActionResult GetFoodSuggestions()
         {
             RestaurantSearchViewModel restaurantSearchModel = new RestaurantSearchViewModel();
@@ -172,7 +218,7 @@ namespace WhatDo.Controllers
             var geoCodeClient = new WebClient();
             geoCodeClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
             var geoCodeResponse = geoCodeClient.DownloadString("https://api.internationalshowtimes.com/v4/cities?query=" + restaurantSearchModel.User.City);
-            var geoCodeResults = new JavaScriptSerializer().Deserialize<GeoCodeResponse>(geoCodeResponse);
+            var geoCodeResults = new JavaScriptSerializer().Deserialize<IShowTimeCityResultResponse>(geoCodeResponse);
             string lat = geoCodeResults.Cities[0].Lat;
             string lon = geoCodeResults.Cities[0].Lon;
 
@@ -183,11 +229,11 @@ namespace WhatDo.Controllers
                     restaurantSearchModel.CuisineIdsToSearch.Add(cuisine.CuisineId);
                 }
             }
+            restaurantSearchModel.ResolvedCuisineIdsToSearch = restaurantSearchModel.CuisineIdsToSearch.First();
             if (restaurantSearchModel.CuisineIdsToSearch.Count > 1)
             {
                 restaurantSearchModel.ResolvedCuisineIdsToSearch = string.Join(",", restaurantSearchModel.CuisineIdsToSearch);
-            }
-            restaurantSearchModel.ResolvedCuisineIdsToSearch = restaurantSearchModel.CuisineIdsToSearch.First();
+            }            
             var restaurantSearchClient = new WebClient();
             restaurantSearchClient.Headers.Add("user-key", "d846616ebd6c5c018f6cd8fd36a6fb68");
             var restaurantSearchResponse = restaurantSearchClient.DownloadString("https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + lon + "&cuisines=" + restaurantSearchModel.ResolvedCuisineIdsToSearch + "");
@@ -217,8 +263,8 @@ namespace WhatDo.Controllers
 
         }
         
-        public ActionResult DeclineFoodSuggestion(RestaurantSearchViewModel model)
-        {
+        //public void DeclineFoodSuggestion(RestaurantSearchViewModel model)
+        //{
             //int restaurantId;
             //var result = Int32.TryParse(restaurantResults.First().Id, out restaurantId);
             //FoodSuggestion foodSuggestionToRecord = new FoodSuggestion
@@ -236,7 +282,7 @@ namespace WhatDo.Controllers
             //db.SaveChanges();
             //restaurantResults.RemoveAt(0);
 
-            return View();
-        }
+            //return View();
+        //}
     }
 }

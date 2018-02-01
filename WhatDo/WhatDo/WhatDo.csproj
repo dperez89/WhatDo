@@ -219,13 +219,23 @@
     <Compile Include="Migrations\201801312259353_misc.Designer.cs">
       <DependentUpon>201801312259353_misc.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802011556333_AddingInNewColumnToGenreTable.cs" />
+    <Compile Include="Migrations\201802011556333_AddingInNewColumnToGenreTable.Designer.cs">
+      <DependentUpon>201802011556333_AddingInNewColumnToGenreTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802011557501_SeedingGenreTableWithData.cs" />
+    <Compile Include="Migrations\201802011557501_SeedingGenreTableWithData.Designer.cs">
+      <DependentUpon>201802011557501_SeedingGenreTableWithData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cities.cs" />
-    <Compile Include="Models\CityResultResponse.cs" />
+    <Compile Include="Models\Movies.cs" />
+    <Compile Include="Models\MovieResultResponse.cs" />
+    <Compile Include="Models\ZomatoCityResultResponse.cs" />
     <Compile Include="Models\Cuisine.cs" />
     <Compile Include="Models\Cuisines.cs" />
     <Compile Include="Models\CuisineResultResponse.cs" />
-    <Compile Include="Models\GeoCodeResponse.cs" />
+    <Compile Include="Models\IShowTimeCityResultResponse.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\location_suggestions.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -237,6 +247,7 @@
     <Compile Include="Models\GetPreferencesViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MovieSearchViewModel.cs" />
     <Compile Include="Models\MovieSuggestion.cs" />
     <Compile Include="Models\Restaurant.cs" />
     <Compile Include="Models\Restaurants.cs" />
@@ -313,6 +324,7 @@
     <Content Include="Views\Enjoyer\GetCuisinePreferences.cshtml" />
     <Content Include="Views\Enjoyer\GetGenrePreferences.cshtml" />
     <Content Include="Views\Enjoyer\GetFoodSuggestions.cshtml" />
+    <Content Include="Views\Enjoyer\GetMovieSuggestions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -337,6 +349,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801312259353_misc.resx">
       <DependentUpon>201801312259353_misc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802011556333_AddingInNewColumnToGenreTable.resx">
+      <DependentUpon>201802011556333_AddingInNewColumnToGenreTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802011557501_SeedingGenreTableWithData.resx">
+      <DependentUpon>201802011557501_SeedingGenreTableWithData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

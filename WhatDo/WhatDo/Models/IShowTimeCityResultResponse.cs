@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WhatDo.Models
 {
-    public class GeoCodeResponse
+    public class IShowTimeCityResultResponse
     {
         public List<Cities> Cities { get; set; }
     }

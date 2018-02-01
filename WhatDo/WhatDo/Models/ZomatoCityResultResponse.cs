@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WhatDo.Models
 {
-    public class CityResultResponse
+    public class ZomatoCityResultResponse
     {
         public List<location_suggestions> Location_Suggestions { get; set; }
         public string Status { get; set; }

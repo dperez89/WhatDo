@@ -1,0 +1,42 @@
+﻿@model WhatDo.Models.RestaurantSearchViewModel
+@{
+    ViewBag.Title = "ShowFoodSuggestions";
+}
+
+<h2>How Do These Places Sound?</h2>
+
+<div class="right">
+    <h3>The Rundown...</h3>
+    <table class="table" align="center" width="60">
+        <tr>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>      
+            <th>City</th>          
+            <th>State</th>
+            <th>Zip</th>
+            <th>Cuisine(s)</th>
+            <th>Average Cost for Two</th>
+            <th>Your Choice?</th>
+        </tr>
+        @foreach (WhatDo.Models.Restaurant restaurant in Model.RestaurantResults)
+        {
+            <tr>
+            <td>@restaurant.Name</td>
+            <td>@restaurant.Location.Address.Split(',')[0]</td>
+            <td>@restaurant.Location.City</td>
+            <td>@Model.User.State</td>
+            <td>@restaurant.Location.Zipcode</td>
+            <td>@restaurant.Cuisines</td>
+            <td>$@restaurant.Average_Cost_For_Two</td>
+           <td>@Html.ActionLink("Love It!", "AcceptFoodSuggestion", new { restaurantResults = Model.RestaurantResults, userId = Model.User.Id }) |
+            @Html.ActionLink("Pass!", "DeclineFoodSuggestion", Model)
+            </td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+
