@@ -22,6 +22,7 @@
         </tr>
         @foreach (WhatDo.Models.Restaurant restaurant in Model.RestaurantResults)
         {
+
             <tr>
             <td>@restaurant.Name</td>
             <td>@restaurant.Location.Address.Split(',')[0]</td>
@@ -29,9 +30,25 @@
             <td>@Model.User.State</td>
             <td>@restaurant.Location.Zipcode</td>
             <td>@restaurant.Cuisines</td>
-            <td>$@restaurant.Average_Cost_For_Two</td>
-           <td>@Html.ActionLink("Love It!", "AcceptFoodSuggestion", new { restaurantResults = Model.RestaurantResults, userId = Model.User.Id }) |
-            @Html.ActionLink("Pass!", "DeclineFoodSuggestion", Model)
+            <td>$@restaurant.Average_Cost_For_Two</td>          
+            <td>@Html.ActionLink("Love It!", "AcceptFoodSuggestion", restaurant,
+                new
+                {
+                    restaurantId = restaurant.Id,
+                    name = restaurant.Name,
+                    url = restaurant.Url,
+                    address = restaurant.Location.Address,
+                    locality = restaurant.Location.Locality,
+                    city = restaurant.Location.City,
+                    state = restaurant.Location.State,
+                    latitude = restaurant.Location.Latitude,
+                    longitude = restaurant.Location.Longitude,
+                    zipcode = restaurant.Location.Zipcode,
+                    country_id = restaurant.Location.Country_Id,
+                    cuisines = restaurant.Cuisines,
+                    average_cost_for_two = restaurant.Average_Cost_For_Two,
+                    price_range = restaurant.Price_Range
+                })
             </td>
             </tr>
         }

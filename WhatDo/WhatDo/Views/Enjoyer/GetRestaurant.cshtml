@@ -1,0 +1,27 @@
+﻿@model WhatDo.Models.GetRestaurantViewModel
+@{
+    ViewBag.Title = "ShowFoodSuggestions";
+}
+
+<h2>How Do These Places Sound?</h2>
+
+<div class="right">
+    <h3>Enjoy Eating At </h3>
+    <br />
+    <h4><bold>Restaurant Information</bold></h4>
+    <table class="table" align="center" width="100">
+        <tr>
+            <th>Address</th>
+            <th>Telephone</th>
+            <th>Website</th>
+        </tr>
+        <tr>
+            <td>@Model.Restaurant.Name</td>
+        </tr>
+    </table>
+
+
+</div>
+
+
+

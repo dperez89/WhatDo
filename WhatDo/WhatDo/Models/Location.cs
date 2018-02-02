@@ -10,6 +10,7 @@ namespace WhatDo.Models
         public string Address { get; set; }
         public string Locality { get; set; }
         public string City { get; set; }
+        public string State { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public string Zipcode { get; set; }

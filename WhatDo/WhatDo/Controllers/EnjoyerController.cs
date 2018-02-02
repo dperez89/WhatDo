@@ -164,6 +164,41 @@ namespace WhatDo.Controllers
 
         // GET
         [HttpGet]
+        public ActionResult GetShowtimes(Movies selectedMovie)
+        {
+            ShowTimeSearchViewModel showTimeSearchModel = new ShowTimeSearchViewModel();
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            showTimeSearchModel.User = currentUser;
+
+            var getIShowTimeCityIdClient = new WebClient();
+            getIShowTimeCityIdClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
+            var getIShowTimeCityIdResponse = getIShowTimeCityIdClient.DownloadString("https://api.internationalshowtimes.com/v4/cities?query=" + currentUser.City);
+            var getIShowTimeCityResults = new JavaScriptSerializer().Deserialize<IShowTimeCityResultResponse>(getIShowTimeCityIdResponse);
+            string cityId = getIShowTimeCityResults.Cities[0].Id;
+
+            var showTimeSearchClient = new WebClient();
+            showTimeSearchClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
+            var showTimeSearchResponse = showTimeSearchClient.DownloadString("https://api.internationalshowtimes.com/v4/showtimes?movie_id=" + selectedMovie.Id + "&city_ids=" + cityId + "&all_fields=true");
+            var showTimeSearchResults = new JavaScriptSerializer().Deserialize<ShowTimeSearchResponse>(showTimeSearchResponse);
+            
+            foreach(Showtimes showtime in showTimeSearchResults.Showtimes)
+            {
+                showTimeSearchModel.ShowtimeResults.Add(showtime);
+            }
+
+            var resolveCinemaIdClient = new WebClient();
+            resolveCinemaIdClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
+            var resolveCinemaResponse = resolveCinemaIdClient.DownloadString("https://api.internationalshowtimes.com/v4/cinemas/" + showTimeSearchModel.ShowtimeResults.First().Cinema_Id);
+            var resolveCinemaResult = new JavaScriptSerializer().Deserialize<CinemaSearchResponse>(resolveCinemaResponse);
+            showTimeSearchModel.ResolvedCinema = resolveCinemaResult.Cinema;
+            showTimeSearchModel.Movie = selectedMovie;                                 
+            return View(showTimeSearchModel);
+
+
+        }
+
+        // GET
+        [HttpGet]
         public ActionResult GetMovieSuggestions()
         {
             MovieSearchViewModel movieSearchModel = new MovieSearchViewModel();
@@ -174,7 +209,7 @@ namespace WhatDo.Controllers
             getIShowTimeCityIdClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
             var getIShowTimeCityIdResponse = getIShowTimeCityIdClient.DownloadString("https://api.internationalshowtimes.com/v4/cities?query=" + movieSearchModel.User.City);
             var getIShowTimeCityResults = new JavaScriptSerializer().Deserialize<IShowTimeCityResultResponse>(getIShowTimeCityIdResponse);
-            string iShowTimeCityId = getIShowTimeCityResults.Cities[0].Id;
+            movieSearchModel.CityId = getIShowTimeCityResults.Cities[0].Id;
 
             foreach (UserToGenre genre in db.UserToGenres)
             {
@@ -202,9 +237,15 @@ namespace WhatDo.Controllers
             }
             var movieSearchClient = new WebClient();
             movieSearchClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
-            var movieSearchResponse = movieSearchClient.DownloadString("https://api.internationalshowtimes.com/v4/movies?genre_ids="+movieSearchModel.ResolvedGenreIdsToSearch+"&city_ids="+iShowTimeCityId+"");
+            var movieSearchResponse = movieSearchClient.DownloadString("https://api.internationalshowtimes.com/v4/movies?genre_ids="+movieSearchModel.ResolvedGenreIdsToSearch+"&city_ids="+movieSearchModel.CityId+"&all_fields=true");
             var movieSearchResults = new JavaScriptSerializer().Deserialize<MovieResultResponse>(movieSearchResponse);
-            return View();
+
+            foreach (Movies movie in movieSearchResults.Movies)
+            {
+                movieSearchModel.MovieSearchResults.Add(movie);
+            }
+
+            return View(movieSearchModel);
 
         }
 
@@ -246,43 +287,63 @@ namespace WhatDo.Controllers
             return View(restaurantSearchModel);
         }
 
-        public void AcceptFoodSuggestions(List<Restaurant> restaurantResults, string userId)
+        //public ActionResult AcceptFoodSuggestion(List<Restaurant> restaurantResults, string userId)
+        //{
+        //    int restaurantId;
+        //    var result = Int32.TryParse(restaurantResults.First().Id, out restaurantId);
+        //    FoodSuggestion foodSuggestionToRecord = new FoodSuggestion { RestaurantId = restaurantId,
+        //        Name = restaurantResults[0].Name,
+        //        Address = restaurantResults[0].Location.Address,
+        //        City = restaurantResults[0].Location.City,
+        //        ZipCode = restaurantResults[0].Location.Zipcode,
+        //        Latitude = restaurantResults[0].Location.Latitude,
+        //        Longitude = restaurantResults[0].Location.Longitude,
+        //        IsChosenByUser = true };
+        //    db.FoodSuggestions.Add(foodSuggestionToRecord);
+        //    db.SaveChanges();
+
+        //    return RedirectToAction("GetRestaurant", "Enjoyer", restaurantResults);
+        //}
+
+        public ActionResult AcceptFoodSuggestion(string restaurantId, string name, string url, string address, string locality, string city, string state, string latitude, string longitude, string zipcode, string country_id, string cuisines, string average_cost_for_two, string price_range)
         {
-            int restaurantId;
-            var result = Int32.TryParse(restaurantResults.First().Id, out restaurantId);
-            FoodSuggestion foodSuggestionToRecord = new FoodSuggestion { RestaurantId = restaurantId,
-                Name = restaurantResults[0].Name,
-                Address = restaurantResults[0].Location.Address,
-                City = restaurantResults[0].Location.City,
-                ZipCode = restaurantResults[0].Location.Zipcode,
-                Latitude = restaurantResults[0].Location.Latitude,
-                Longitude = restaurantResults[0].Location.Longitude,
-                IsChosenByUser = true };
+            int restaurantIdNumber;
+            var result = Int32.TryParse(restaurantId, out restaurantIdNumber);
+            FoodSuggestion foodSuggestionToRecord = new FoodSuggestion
+            {
+                RestaurantId = restaurantIdNumber,
+                Name = name,
+                Address = address,
+                City = city,
+                ZipCode = zipcode,
+                Latitude = latitude,
+                Longitude = longitude,
+                IsChosenByUser = true
+            };
             db.FoodSuggestions.Add(foodSuggestionToRecord);
             db.SaveChanges();
+            Location location = new Location { Address = address, Locality = locality, City = city, State = state, Latitude = latitude, Longitude = longitude, Zipcode = zipcode, Country_Id = country_id };
+            Restaurant chosenRestaurant = new Restaurant
+            {
+                Id = restaurantId,
+                Name = name,
+                Url = url,
+                Location = location,
+                Cuisines = cuisines,
+                Average_Cost_For_Two = average_cost_for_two,
+                Price_Range = price_range
+            };
 
+            return View("GetRestaurant", chosenRestaurant);
         }
-        
-        //public void DeclineFoodSuggestion(RestaurantSearchViewModel model)
-        //{
-            //int restaurantId;
-            //var result = Int32.TryParse(restaurantResults.First().Id, out restaurantId);
-            //FoodSuggestion foodSuggestionToRecord = new FoodSuggestion
-            //{
-            //    RestaurantId = restaurantId,
-            //    Name = restaurantResults[0].Name,
-            //    Address = restaurantResults[0].Location.Address,
-            //    City = restaurantResults[0].Location.City,
-            //    ZipCode = restaurantResults[0].Location.Zipcode,
-            //    Latitude = restaurantResults[0].Location.Latitude,
-            //    Longitude = restaurantResults[0].Location.Longitude,
-            //    IsChosenByUser = true
-            //};
-            //db.FoodSuggestions.Add(foodSuggestionToRecord);
-            //db.SaveChanges();
-            //restaurantResults.RemoveAt(0);
 
-            //return View();
-        //}
+        public ActionResult GetRestaurant(List<Restaurant> restaurantResults)
+        {
+            GetRestaurantViewModel getRestaurantModel = new GetRestaurantViewModel();
+            getRestaurantModel.Restaurant = restaurantResults[0];
+
+            return View(getRestaurantModel);
+        }
+       
     }
 }

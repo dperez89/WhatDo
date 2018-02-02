@@ -228,9 +228,19 @@
       <DependentUpon>201802011557501_SeedingGenreTableWithData.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\Cinema.cs" />
+    <Compile Include="Models\CinemaLocation.cs" />
+    <Compile Include="Models\CinemaSearchResponse.cs" />
     <Compile Include="Models\Cities.cs" />
+    <Compile Include="Models\GetRestaurantViewModel.cs" />
     <Compile Include="Models\Movies.cs" />
     <Compile Include="Models\MovieResultResponse.cs" />
+    <Compile Include="Models\ResolvedCinema.cs" />
+    <Compile Include="Models\ShowCinemaViewModel.cs" />
+    <Compile Include="Models\Showtimes.cs" />
+    <Compile Include="Models\ShowTimeSearchResponse.cs" />
+    <Compile Include="Models\ShowTimeSearchViewModel.cs" />
     <Compile Include="Models\ZomatoCityResultResponse.cs" />
     <Compile Include="Models\Cuisine.cs" />
     <Compile Include="Models\Cuisines.cs" />
@@ -325,6 +335,8 @@
     <Content Include="Views\Enjoyer\GetGenrePreferences.cshtml" />
     <Content Include="Views\Enjoyer\GetFoodSuggestions.cshtml" />
     <Content Include="Views\Enjoyer\GetMovieSuggestions.cshtml" />
+    <Content Include="Views\Enjoyer\GetShowtimes.cshtml" />
+    <Content Include="Views\Enjoyer\GetRestaurant.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

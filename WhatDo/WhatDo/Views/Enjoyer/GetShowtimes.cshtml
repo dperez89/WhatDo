@@ -1,0 +1,76 @@
+﻿@model WhatDo.Models.ShowTimeSearchViewModel
+@{
+    ViewBag.Title = "ShowMovieSuggestions";
+}
+
+<h2>Here's Where You Can Catch The Show!</h2>
+
+<div class="right">    
+    <br />
+    <html>
+    <head>
+        <style>
+            #map {
+                height: 400px;
+                width: 100%;
+                align-self: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>@Model.ResolvedCinema.Name</h3>
+        <div id="map"></div>
+        <script>
+      function initMap() {
+        var uluru = {lat: @Model.ResolvedCinema.Location.Lat, lng: @Model.ResolvedCinema.Location.Lon};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmCCSyYE-8iG6v76TQjDECT3VKcVspYQ4&callback=initMap">
+        </script>
+    </body>
+</html>
+    <h3>Here Are Your Showtimes...</h3>
+    <br />
+    <h4><bold>Cinema Information</bold></h4>
+    <table class="table" align="center" width="100">
+        <tr>
+            <th>Address</th>
+            <th>Telephone</th>
+            <th>Website</th>
+        </tr>
+        <tr>
+            <td>@Model.ResolvedCinema.Location.Address.Display_Text</td>
+            <td>@Model.ResolvedCinema.Telephone</td>
+            <td><a href="@Model.ResolvedCinema.Website">Click Me!</a></td>
+        </tr>
+    </table> 
+</div>
+
+<div>
+    <h4>Showtimes</h4>
+    <table class="table" align="center" width="100">
+        <tr>
+        </tr>
+        @foreach (WhatDo.Models.Showtimes showtime in Model.ShowtimeResults)
+        {
+            <tr>
+                <td>@DateTime.Parse(showtime.Start_At)</td>
+                <td><a href="@showtime.Booking_Link">Buy Tickets!</a></td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+
+
+
