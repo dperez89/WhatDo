@@ -29,7 +29,7 @@ namespace WhatDo.Models
     {
         public DbSet<FoodSuggestion> FoodSuggestions { get; set; }
         public DbSet<FriendsList> FriendsLists { get; set; }
-        public DbSet<FriendsListInvite> FriendsListInvites { get; set; }
+        public DbSet<UserToFriendsList> UserToFriendsLists { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<MovieSuggestion> MovieSuggestions { get; set; }
         public DbSet<ShowTimeResults> ShowTimeResults { get; set; }

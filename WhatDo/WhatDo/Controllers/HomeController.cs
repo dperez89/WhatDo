@@ -23,6 +23,10 @@ namespace WhatDo.Controllers
             string adminName = "Admin";                     
             string enjoyerRoleId = (from role in db.Roles where enjoyerName == role.Name select role.Id).First();
             string adminId = (from role in db.Roles where adminName == role.Name select role.Id).First();
+            if (currentUser == null)
+            {
+                return View("Index");
+            }
             if (currentUser.Roles.First().RoleId == enjoyerRoleId )
             {
                return RedirectToAction("Index", "Enjoyer");

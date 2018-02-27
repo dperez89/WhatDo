@@ -282,31 +282,22 @@ namespace WhatDo.Controllers
 
             for (int i = 0; i < 20; i++)
             {
+                restaurantSearchResults.Restaurants[i].Restaurant.Address = restaurantSearchResults.Restaurants[i].Restaurant.Location.Address;
+                restaurantSearchResults.Restaurants[i].Restaurant.Locality = restaurantSearchResults.Restaurants[i].Restaurant.Location.Locality;
+                restaurantSearchResults.Restaurants[i].Restaurant.City = restaurantSearchResults.Restaurants[i].Restaurant.Location.City;
+                restaurantSearchResults.Restaurants[i].Restaurant.State = restaurantSearchResults.Restaurants[i].Restaurant.Location.State;
+                restaurantSearchResults.Restaurants[i].Restaurant.Latitude = restaurantSearchResults.Restaurants[i].Restaurant.Location.Latitude;
+                restaurantSearchResults.Restaurants[i].Restaurant.Longitude = restaurantSearchResults.Restaurants[i].Restaurant.Location.Longitude;
+                restaurantSearchResults.Restaurants[i].Restaurant.Zipcode = restaurantSearchResults.Restaurants[i].Restaurant.Location.Zipcode;
+                restaurantSearchResults.Restaurants[i].Restaurant.Country_Id = restaurantSearchResults.Restaurants[i].Restaurant.Location.Country_Id;
                 restaurantSearchModel.RestaurantResults.Add(restaurantSearchResults.Restaurants[i].Restaurant);
             }
             return View(restaurantSearchModel);
-        }
-
-        //public ActionResult AcceptFoodSuggestion(List<Restaurant> restaurantResults, string userId)
-        //{
-        //    int restaurantId;
-        //    var result = Int32.TryParse(restaurantResults.First().Id, out restaurantId);
-        //    FoodSuggestion foodSuggestionToRecord = new FoodSuggestion { RestaurantId = restaurantId,
-        //        Name = restaurantResults[0].Name,
-        //        Address = restaurantResults[0].Location.Address,
-        //        City = restaurantResults[0].Location.City,
-        //        ZipCode = restaurantResults[0].Location.Zipcode,
-        //        Latitude = restaurantResults[0].Location.Latitude,
-        //        Longitude = restaurantResults[0].Location.Longitude,
-        //        IsChosenByUser = true };
-        //    db.FoodSuggestions.Add(foodSuggestionToRecord);
-        //    db.SaveChanges();
-
-        //    return RedirectToAction("GetRestaurant", "Enjoyer", restaurantResults);
-        //}
+        }       
 
         public ActionResult AcceptFoodSuggestion(string restaurantId, string name, string url, string address, string locality, string city, string state, string latitude, string longitude, string zipcode, string country_id, string cuisines, string average_cost_for_two, string price_range)
         {
+            GetRestaurantViewModel getRestaurantModel = new GetRestaurantViewModel();
             int restaurantIdNumber;
             var result = Int32.TryParse(restaurantId, out restaurantIdNumber);
             FoodSuggestion foodSuggestionToRecord = new FoodSuggestion
@@ -328,13 +319,21 @@ namespace WhatDo.Controllers
                 Id = restaurantId,
                 Name = name,
                 Url = url,
-                Location = location,
+                Address = address,
+                Locality = locality,
+                City = city,
+                State = state,
+                Latitude = latitude,
+                Longitude = longitude,
+                Zipcode = zipcode,
+                Country_Id = country_id,
                 Cuisines = cuisines,
                 Average_Cost_For_Two = average_cost_for_two,
                 Price_Range = price_range
             };
+            getRestaurantModel.Restaurant = chosenRestaurant;
 
-            return View("GetRestaurant", chosenRestaurant);
+            return View("GetRestaurant", getRestaurantModel);
         }
 
         public ActionResult GetRestaurant(List<Restaurant> restaurantResults)

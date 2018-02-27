@@ -227,6 +227,14 @@
     <Compile Include="Migrations\201802011557501_SeedingGenreTableWithData.Designer.cs">
       <DependentUpon>201802011557501_SeedingGenreTableWithData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802271647410_Removing dbo.FriendsListInvites from database.cs" />
+    <Compile Include="Migrations\201802271647410_Removing dbo.FriendsListInvites from database.Designer.cs">
+      <DependentUpon>201802271647410_Removing dbo.FriendsListInvites from database.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802271750490_Adding in UserToFriendsList Table.cs" />
+    <Compile Include="Migrations\201802271750490_Adding in UserToFriendsList Table.Designer.cs">
+      <DependentUpon>201802271750490_Adding in UserToFriendsList Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Cinema.cs" />
@@ -241,6 +249,7 @@
     <Compile Include="Models\Showtimes.cs" />
     <Compile Include="Models\ShowTimeSearchResponse.cs" />
     <Compile Include="Models\ShowTimeSearchViewModel.cs" />
+    <Compile Include="Models\UserToFriendsList.cs" />
     <Compile Include="Models\ZomatoCityResultResponse.cs" />
     <Compile Include="Models\Cuisine.cs" />
     <Compile Include="Models\Cuisines.cs" />
@@ -252,7 +261,6 @@
     <Compile Include="Models\CityStateZip.cs" />
     <Compile Include="Models\FoodSuggestion.cs" />
     <Compile Include="Models\FriendsList.cs" />
-    <Compile Include="Models\FriendsListInvite.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\GetPreferencesViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -367,6 +375,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802011557501_SeedingGenreTableWithData.resx">
       <DependentUpon>201802011557501_SeedingGenreTableWithData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802271647410_Removing dbo.FriendsListInvites from database.resx">
+      <DependentUpon>201802271647410_Removing dbo.FriendsListInvites from database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802271750490_Adding in UserToFriendsList Table.resx">
+      <DependentUpon>201802271750490_Adding in UserToFriendsList Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
