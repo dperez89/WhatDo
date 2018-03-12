@@ -241,6 +241,7 @@
     <Compile Include="Models\CinemaLocation.cs" />
     <Compile Include="Models\CinemaSearchResponse.cs" />
     <Compile Include="Models\Cities.cs" />
+    <Compile Include="Models\FriendsListViewModel.cs" />
     <Compile Include="Models\GetRestaurantViewModel.cs" />
     <Compile Include="Models\Movies.cs" />
     <Compile Include="Models\MovieResultResponse.cs" />
@@ -304,6 +305,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\ZipCodeHelper.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Style\Style.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -345,6 +347,7 @@
     <Content Include="Views\Enjoyer\GetMovieSuggestions.cshtml" />
     <Content Include="Views\Enjoyer\GetShowtimes.cshtml" />
     <Content Include="Views\Enjoyer\GetRestaurant.cshtml" />
+    <Content Include="Views\Enjoyer\ManageFriends.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

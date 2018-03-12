@@ -1,0 +1,80 @@
+﻿@model WhatDo.Models.FriendsListViewModel
+@{
+    ViewBag.Title = "ManageFriends";
+}
+
+<h2>Friends List</h2>
+
+<div class="right">
+    <h3>Find Friend</h3>
+    @if (Model.UserHasAttemptedASearch == false)
+    {
+        <p>Send a friend request!</p>
+        using (Html.BeginForm("InviteFriend", "Enjoyer", FormMethod.Post))
+        {
+            @Html.TextBoxFor(model => model.UserToFind)
+            @Html.ValidationMessageFor(model => model.UserToFind)
+            <button type="submit">Send Request</button>
+        }
+    }
+    @if (Model.UserHasAttemptedASearch == true && Model.UserToFindIsFound == false)
+    {
+        <p>Sorry, we couldn't find that user. Please try again!</p>
+        using (Html.BeginForm("InviteFriend", "Enjoyer", FormMethod.Post))
+        {
+            @Html.TextBoxFor(model => model.UserToFind)
+            @Html.ValidationMessageFor(model => model.UserToFind)
+            <button type="submit">Send Request</button>
+        }
+    }
+    @if (Model.UserToFindIsFound == true && Model.UserToFindIsFound == true)
+    {
+        <p>Friend Request Sent!</p>
+        using (Html.BeginForm("InviteFriend", "Enjoyer", FormMethod.Post))
+        {
+            @Html.TextBoxFor(model => model.UserToFind)
+            @Html.ValidationMessageFor(model => model.UserToFind)
+            <button type="submit">Send Request</button>
+        }
+    }
+</div>
+
+<div class="right">
+    <h3>Friend Requests</h3>
+    <table class="table" align="center" width="60">
+        <tr></tr>
+        <tr>
+            <th>User Name</th>
+        </tr>        
+        @foreach (string userName in Model.InvitingUserNames)
+        {
+            <tr>
+
+                <td>@userName</td>
+                <td>@Html.ActionLink("Accept", "AcceptFriendRequest", new { name = userName })</td>
+                <td>@Html.ActionLink("Decline", "DeclineFriendRequest", new { name = userName })</td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div class="right">
+    <h3>Your Friends</h3>
+    <table class="table" align="center" width="60">
+        <tr></tr>
+        <tr>
+            <th>User Name</th>
+        </tr>
+        @foreach (var friend in Model.FriendsList)
+        {
+
+            <tr>
+                <td>@friend.UserName</td>
+                <td>
+                    @Html.ActionLink("Remove", "AcceptFoodSuggestion")
+            </td>
+        </tr>
+        }
+    </table>
+</div>
+

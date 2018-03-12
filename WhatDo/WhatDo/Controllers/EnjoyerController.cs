@@ -25,10 +25,25 @@ namespace WhatDo.Controllers
         }
         // GET: Enjoyer
         public ActionResult Index()
-        {            
-            return View();
+        {
+            FriendsListViewModel friendsListModel = new FriendsListViewModel();
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            foreach (UserToFriendsList invite in db.UserToFriendsLists)
+            {
+                if(invite.UserId == currentUser.Id && invite.IsAccepted == false && invite.IsDenied == false)
+                {
+                    friendsListModel.Invites.Add(invite);
+                }
+            }
+            //foreach (UserToFriendsList row in db.UserToFriendsLists)
+            //{
+            //    if(row.FriendsListId == currentUser.FriendsListId && row.IsAccepted == true)
+            //    {
+            //        friendsListModel.FriendsList.Add(row.User);
+            //    }
+            //}
+            return View(friendsListModel);
         }
-
         // GET:
         [HttpGet]
         public ActionResult GetGenrePreferences()
@@ -195,6 +210,65 @@ namespace WhatDo.Controllers
             return View(showTimeSearchModel);
 
 
+        }
+        // GET
+        public ActionResult ManageFriends(FriendsListViewModel model)
+        {
+            FriendsListViewModel friendsListModel = new FriendsListViewModel();
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            foreach (UserToFriendsList invite in db.UserToFriendsLists)
+            {
+                if (invite.UserId == currentUser.Id && invite.IsAccepted == false && invite.IsDenied == false)
+                {
+                    friendsListModel.Invites.Add(invite);
+                }
+            }
+            foreach(UserToFriendsList invite in friendsListModel.Invites)
+            {
+                foreach(ApplicationUser user in db.Users)
+                {
+                    if(user.FriendsListId == invite.FriendsListId)
+                    {
+                        friendsListModel.InvitingUserNames.Add(user.UserName);
+                    }
+                }
+            }
+            foreach (UserToFriendsList row in db.UserToFriendsLists)
+            {
+                if (row.FriendsListId == currentUser.FriendsListId && row.IsAccepted == true)
+                {
+                    friendsListModel.FriendsList.Add(row.User);
+                }
+            }
+            return View(friendsListModel);
+        }
+
+        // GET
+        public ActionResult InviteFriend(FriendsListViewModel model)
+        {
+            model.UserToFindIsFound = false;
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            UserToFriendsList newFriendRequest = new UserToFriendsList();
+            foreach (ApplicationUser user in db.Users)
+            {
+                if(user.UserName == model.UserToFind)
+                {
+                    model.UserHasAttemptedASearch = true;
+                    model.UserToFindIsFound = true;
+                    newFriendRequest.FriendsListId = (int)currentUser.FriendsListId;
+                    newFriendRequest.UserId = user.Id;
+                    newFriendRequest.IsAccepted = false;
+                    newFriendRequest.IsDenied = false;
+                    break;
+                }
+            }
+            if(model.UserHasAttemptedASearch == true && model.UserToFindIsFound == true)
+            {
+                db.UserToFriendsLists.Add(newFriendRequest);
+                db.SaveChanges();
+                return View("ManageFriends", model);
+            }            
+            return View("ManageFriends", model);
         }
 
         // GET

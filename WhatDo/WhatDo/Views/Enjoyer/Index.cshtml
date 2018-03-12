@@ -1,15 +1,27 @@
-﻿@{
+﻿@model WhatDo.Models.FriendsListViewModel
+@{
+    @Styles.Render("~/Style/Style.css")
     ViewBag.Title = "Enjoyer Home Page";
 }
 
 <div class="jumbotron">
     <h1>Welcome!</h1>
     <p class="lead">What do you want to do?</p>
-    @*<p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
-    
+    <h2>Food</h2>
     <input type="button" value="Manage Food Preferences" onclick="@("window.location.href='" + @Url.Action("GetCuisinePreferences", "Enjoyer") + "'");" />
-    <input type="button" value="Manage Movie Preferences" onclick="@("window.location.href='" + @Url.Action("GetGenrePreferences", "Enjoyer") + "'");" />
     <input type="button" value="Get Food Suggestions" onclick="@("window.location.href='" + @Url.Action("GetFoodSuggestions", "Enjoyer") + "'");" />
+    <h2>Movies</h2>
+    <input type="button" value="Manage Movie Preferences" onclick="@("window.location.href='" + @Url.Action("GetGenrePreferences", "Enjoyer") + "'");" />
     <input type="button" value="Get Movie Suggestions" onclick="@("window.location.href='" + @Url.Action("GetMovieSuggestions", "Enjoyer") + "'");" />
-
+    <h2>Friends</h2>
+    <input type="button" value="Manage Friends" onclick="@("window.location.href='" + @Url.Action("ManageFriends", "Enjoyer") + "'");" />
+    <h2>Friend Requests</h2>
+    @if (Model.Invites.Count == 0)
+    {
+        <p>You currently have no pending friend requests.</p>
+    }
+    else
+    {
+        <p>You have @Model.Invites.Count pending friend requests!</p>
+    }
 </div>

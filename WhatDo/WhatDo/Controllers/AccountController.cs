@@ -183,7 +183,7 @@ namespace WhatDo.Controllers
             var newFriendsList = new FriendsList();
             var userToAddFriendsListFor = db.Users.Find(currentUserId);
             userToAddFriendsListFor.FriendsListId = newFriendsList.Id;
-            newFriendsList.Name = userToAddFriendsListFor.UserName + "'s Friends List";
+            newFriendsList.Name = currentUserId;
             db.FriendsLists.Add(newFriendsList);
             db.SaveChanges();
             return RedirectToAction("Index", "Enjoyer");
