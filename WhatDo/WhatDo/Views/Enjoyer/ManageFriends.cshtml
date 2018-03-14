@@ -51,8 +51,8 @@
             <tr>
 
                 <td>@userName</td>
-                <td>@Html.ActionLink("Accept", "AcceptFriendRequest", new { name = userName })</td>
-                <td>@Html.ActionLink("Decline", "DeclineFriendRequest", new { name = userName })</td>
+                <td>@Html.ActionLink("Accept", "HandleFriendRequest", new { name = userName, isAccepting = true })</td>
+                <td>@Html.ActionLink("Decline", "HandleFriendRequest", new { name = userName, isAccepting = false })</td>
             </tr>
         }
     </table>
@@ -71,7 +71,7 @@
             <tr>
                 <td>@friend.UserName</td>
                 <td>
-                    @Html.ActionLink("Remove", "AcceptFoodSuggestion")
+                    @Html.ActionLink("Remove", "RemoveFriend", new { friendsListId = friend.FriendsListId, userId = friend.Id });
             </td>
         </tr>
         }

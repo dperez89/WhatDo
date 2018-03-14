@@ -348,6 +348,7 @@
     <Content Include="Views\Enjoyer\GetShowtimes.cshtml" />
     <Content Include="Views\Enjoyer\GetRestaurant.cshtml" />
     <Content Include="Views\Enjoyer\ManageFriends.cshtml" />
+    <Content Include="Views\Enjoyer\GetFriendsForConsideration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

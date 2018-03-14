@@ -9,10 +9,10 @@
     <p class="lead">What do you want to do?</p>
     <h2>Food</h2>
     <input type="button" value="Manage Food Preferences" onclick="@("window.location.href='" + @Url.Action("GetCuisinePreferences", "Enjoyer") + "'");" />
-    <input type="button" value="Get Food Suggestions" onclick="@("window.location.href='" + @Url.Action("GetFoodSuggestions", "Enjoyer") + "'");" />
+    <input type="button" value="Get Food Suggestions" onclick="@("window.location.href='" + @Url.Action("GetFriendsForConsideration", "Enjoyer", new { intendedAction = "GetFoodSuggestions", controller = "Enjoyer" }) + "'");" />
     <h2>Movies</h2>
     <input type="button" value="Manage Movie Preferences" onclick="@("window.location.href='" + @Url.Action("GetGenrePreferences", "Enjoyer") + "'");" />
-    <input type="button" value="Get Movie Suggestions" onclick="@("window.location.href='" + @Url.Action("GetMovieSuggestions", "Enjoyer") + "'");" />
+    <input type="button" value="Get Movie Suggestions" onclick="@("window.location.href='" + @Url.Action("GetFriendsForConsideration", "Enjoyer", new { intendedAction = "GetMovieSuggestions", controller = "Enjoyer" }) + "'");" />
     <h2>Friends</h2>
     <input type="button" value="Manage Friends" onclick="@("window.location.href='" + @Url.Action("ManageFriends", "Enjoyer") + "'");" />
     <h2>Friend Requests</h2>

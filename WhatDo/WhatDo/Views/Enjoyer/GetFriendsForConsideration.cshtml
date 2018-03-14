@@ -1,0 +1,18 @@
+﻿@model WhatDo.Models.FriendsListViewModel
+@{
+    ViewBag.Title = "GetFriendsForConsideration";
+}
+
+<h2>Who Do We Have?</h2>
+
+@using (Html.BeginForm(Model.Action, Model.Controller, FormMethod.Post))
+{
+    foreach (var friend in Model.FriendsList)
+    {
+        <label>@Html.DisplayFor(modelItem => friend.UserName)</label>
+            <input type="checkbox" name="friends" value="@friend.Id">
+    }
+    <button type="submit">Continue</button>
+}
+
+

@@ -7,6 +7,8 @@ namespace WhatDo.Models
 {
     public class FriendsListViewModel
     {
+        public string Action { get; set; }
+        public string Controller { get; set; }
         public string UserToFind { get; set; }
         public bool UserToFindIsFound { get; set; }
         public bool UserHasAttemptedASearch { get; set; }

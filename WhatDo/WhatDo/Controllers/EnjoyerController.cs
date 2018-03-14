@@ -35,15 +35,40 @@ namespace WhatDo.Controllers
                     friendsListModel.Invites.Add(invite);
                 }
             }
-            //foreach (UserToFriendsList row in db.UserToFriendsLists)
-            //{
-            //    if(row.FriendsListId == currentUser.FriendsListId && row.IsAccepted == true)
-            //    {
-            //        friendsListModel.FriendsList.Add(row.User);
-            //    }
-            //}
             return View(friendsListModel);
         }
+
+        public ActionResult GetFriendsForConsideration(string intendedAction, string controller)
+        {
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            FriendsListViewModel suggestionsFriendsListModel = new FriendsListViewModel();
+            suggestionsFriendsListModel.Action = intendedAction;
+            suggestionsFriendsListModel.Controller = controller;
+            var acceptedRequestsOne = (from ele in db.UserToFriendsLists where ele.UserId == currentUser.Id && ele.IsAccepted == true select ele.FriendsListId).ToList();
+            foreach (var friendsListId in acceptedRequestsOne)
+            {
+                foreach (ApplicationUser user in db.Users)
+                {
+                    if (friendsListId == user.FriendsListId)
+                    {
+                        suggestionsFriendsListModel.FriendsList.Add(user);
+                    }
+                }
+            }
+            var acceptedRequestsTwo = (from ele in db.UserToFriendsLists where ele.FriendsListId == currentUser.FriendsListId && ele.IsAccepted == true select ele.UserId).ToList();
+            foreach (var userId in acceptedRequestsTwo)
+            {
+                foreach (ApplicationUser user in db.Users)
+                {
+                    if (userId == user.Id)
+                    {
+                        suggestionsFriendsListModel.FriendsList.Add(user);
+                    }
+                }
+            }
+            return View(suggestionsFriendsListModel);
+        }
+
         // GET:
         [HttpGet]
         public ActionResult GetGenrePreferences()
@@ -233,11 +258,26 @@ namespace WhatDo.Controllers
                     }
                 }
             }
-            foreach (UserToFriendsList row in db.UserToFriendsLists)
+            var acceptedRequestsOne = (from ele in db.UserToFriendsLists where ele.UserId == currentUser.Id && ele.IsAccepted == true select ele.FriendsListId).ToList();
+            foreach(var friendsListId in acceptedRequestsOne)
             {
-                if (row.FriendsListId == currentUser.FriendsListId && row.IsAccepted == true)
+                foreach(ApplicationUser user in db.Users)
                 {
-                    friendsListModel.FriendsList.Add(row.User);
+                    if(friendsListId == user.FriendsListId)
+                    {
+                        friendsListModel.FriendsList.Add(user);
+                    }
+                }
+            }
+            var acceptedRequestsTwo = (from ele in db.UserToFriendsLists where ele.FriendsListId == currentUser.FriendsListId && ele.IsAccepted == true select ele.UserId).ToList();
+            foreach(var userId in acceptedRequestsTwo)
+            {
+                foreach(ApplicationUser user in db.Users)
+                {
+                    if(userId == user.Id)
+                    {
+                        friendsListModel.FriendsList.Add(user);
+                    }
                 }
             }
             return View(friendsListModel);
@@ -267,23 +307,84 @@ namespace WhatDo.Controllers
                 db.UserToFriendsLists.Add(newFriendRequest);
                 db.SaveChanges();
                 return View("ManageFriends", model);
-            }            
+            }
+            model.UserHasAttemptedASearch = true;      
             return View("ManageFriends", model);
         }
 
-        // GET
-        [HttpGet]
-        public ActionResult GetMovieSuggestions()
+        public ActionResult RemoveFriend(int friendsListId, string userId)
+        {
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            foreach(UserToFriendsList ele in db.UserToFriendsLists)
+            {
+                if(ele.FriendsListId == currentUser.FriendsListId && ele.UserId == userId)
+                {
+                    db.UserToFriendsLists.Remove(ele);
+                    break;
+                }
+                if(ele.FriendsListId == friendsListId && ele.UserId == currentUser.Id)
+                {
+                    db.UserToFriendsLists.Remove(ele);
+                    break;
+                }
+            }
+            db.SaveChanges();
+            return RedirectToAction("ManageFriends");
+        }
+
+        public ActionResult HandleFriendRequest(string name, bool isAccepting)
+        {
+            var friendsListId = (from user in db.Users where user.UserName == name select user.FriendsListId).FirstOrDefault();
+            var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+            if (isAccepting == true)
+            {
+                foreach (UserToFriendsList invite in db.UserToFriendsLists)
+                {
+                    if (invite.FriendsListId.Equals((int)friendsListId) && invite.UserId == currentUser.Id)
+                    {
+                        invite.IsAccepted = true;
+                        break;
+                    }
+                }
+            }
+            if (isAccepting == false)
+            {
+                foreach (UserToFriendsList invite in db.UserToFriendsLists)
+                {
+                    if (invite.FriendsListId.Equals(friendsListId) && invite.UserId == currentUser.Id)
+                    {
+                        invite.IsDenied = true;
+                        break;
+                    }
+                }
+            }
+            db.SaveChanges();
+            return RedirectToAction("ManageFriends");
+        }
+
+        // GET - THIS WAS CHANGED FROM GET
+        public ActionResult GetMovieSuggestions(string[] friends)
         {
             MovieSearchViewModel movieSearchModel = new MovieSearchViewModel();
             var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
             movieSearchModel.User = currentUser;
-
             var getIShowTimeCityIdClient = new WebClient();
             getIShowTimeCityIdClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
             var getIShowTimeCityIdResponse = getIShowTimeCityIdClient.DownloadString("https://api.internationalshowtimes.com/v4/cities?query=" + movieSearchModel.User.City);
             var getIShowTimeCityResults = new JavaScriptSerializer().Deserialize<IShowTimeCityResultResponse>(getIShowTimeCityIdResponse);
             movieSearchModel.CityId = getIShowTimeCityResults.Cities[0].Id;
+
+            foreach (string userId in friends)
+            {
+                foreach(UserToGenre genre in db.UserToGenres)
+                {
+                    if(genre.UserId == userId)
+                    {
+                        string genreIdToAdd = genre.GenreId.ToString();
+                        movieSearchModel.PreferredGenres.Add(genreIdToAdd);
+                    }
+                }
+            }
 
             foreach (UserToGenre genre in db.UserToGenres)
             {
@@ -311,7 +412,7 @@ namespace WhatDo.Controllers
             }
             var movieSearchClient = new WebClient();
             movieSearchClient.Headers.Add("X-API-Key", "aOpKxmKJDaHhhhg7IgRUISKvK4gMVJxx");
-            var movieSearchResponse = movieSearchClient.DownloadString("https://api.internationalshowtimes.com/v4/movies?genre_ids="+movieSearchModel.ResolvedGenreIdsToSearch+"&city_ids="+movieSearchModel.CityId+"&all_fields=true");
+            var movieSearchResponse = movieSearchClient.DownloadString("https://api.internationalshowtimes.com/v4/movies?genre_ids=" + movieSearchModel.ResolvedGenreIdsToSearch + "&city_ids=" + movieSearchModel.CityId + "&all_fields=true");
             var movieSearchResults = new JavaScriptSerializer().Deserialize<MovieResultResponse>(movieSearchResponse);
 
             foreach (Movies movie in movieSearchResults.Movies)
@@ -323,9 +424,8 @@ namespace WhatDo.Controllers
 
         }
 
-        // GET
-        [HttpGet]
-        public ActionResult GetFoodSuggestions()
+        // GET - THIS WAS CHANGED FROM GET
+        public ActionResult GetFoodSuggestions(string[] friends)
         {
             RestaurantSearchViewModel restaurantSearchModel = new RestaurantSearchViewModel();
             var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
@@ -336,6 +436,17 @@ namespace WhatDo.Controllers
             var geoCodeResults = new JavaScriptSerializer().Deserialize<IShowTimeCityResultResponse>(geoCodeResponse);
             string lat = geoCodeResults.Cities[0].Lat;
             string lon = geoCodeResults.Cities[0].Lon;
+
+            foreach (string userId in friends)
+            {
+                foreach(UserToCuisine cuisine in db.UserToCuisines)
+                {
+                    if(cuisine.UserId == userId)
+                    {
+                        restaurantSearchModel.CuisineIdsToSearch.Add(cuisine.CuisineId);
+                    }
+                }
+            }
 
             foreach (UserToCuisine cuisine in db.UserToCuisines)
             {
@@ -348,7 +459,7 @@ namespace WhatDo.Controllers
             if (restaurantSearchModel.CuisineIdsToSearch.Count > 1)
             {
                 restaurantSearchModel.ResolvedCuisineIdsToSearch = string.Join(",", restaurantSearchModel.CuisineIdsToSearch);
-            }            
+            }
             var restaurantSearchClient = new WebClient();
             restaurantSearchClient.Headers.Add("user-key", "d846616ebd6c5c018f6cd8fd36a6fb68");
             var restaurantSearchResponse = restaurantSearchClient.DownloadString("https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + lon + "&cuisines=" + restaurantSearchModel.ResolvedCuisineIdsToSearch + "");
@@ -365,7 +476,7 @@ namespace WhatDo.Controllers
                 restaurantSearchResults.Restaurants[i].Restaurant.Zipcode = restaurantSearchResults.Restaurants[i].Restaurant.Location.Zipcode;
                 restaurantSearchResults.Restaurants[i].Restaurant.Country_Id = restaurantSearchResults.Restaurants[i].Restaurant.Location.Country_Id;
                 restaurantSearchModel.RestaurantResults.Add(restaurantSearchResults.Restaurants[i].Restaurant);
-            }
+            } 
             return View(restaurantSearchModel);
         }       
 
